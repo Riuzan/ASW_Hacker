@@ -1,5 +1,7 @@
 {
   "name": "ASW_Hacker",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "cli-engine-command": "^9.0.7"
+  }
 }
