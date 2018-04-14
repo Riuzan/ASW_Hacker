@@ -6,7 +6,6 @@ one:
   text: MyText
   votes: 1
   user: one
-  comment: one
 
 two:
   title: MyString
@@ -14,4 +13,3 @@ two:
   text: MyText
   votes: 1
   user: two
-  comment: two

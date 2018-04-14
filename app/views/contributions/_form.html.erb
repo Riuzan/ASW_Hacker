@@ -1,8 +1,4 @@
-<%= form_for(@contribution) do |f| %>
-
-  <% if !current_user %>
-  <%end%>
-
+<%= form_with(model: contribution, local: true) do |form| %>
   <% if contribution.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(contribution.errors.count, "error") %> prohibited this contribution from being saved:</h2>
@@ -16,24 +12,31 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
+    <%= form.label :title %>
+    <%= form.text_field :title, id: :contribution_title %>
   </div>
+
   <div class="field">
-    <%= f.label :url %><br>
-    <%= f.text_field :url %>
+    <%= form.label :url %>
+    <%= form.text_field :url, id: :contribution_url %>
   </div>
-  or
-  <br><br>
+
   <div class="field">
-    <%= f.label :text %><br>
-    <%= f.text_area :text %>
+    <%= form.label :text %>
+    <%= form.text_area :text, id: :contribution_text %>
   </div>
-  <div hidden class="field">
-    <%= f.label :user_id %><br>
-    <%= f.text_field :user_id, :value => current_user.id %>
+
+  <div class="field">
+    <%= form.label :votes %>
+    <%= form.number_field :votes, id: :contribution_votes %>
   </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, id: :contribution_user_id %>
+  </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= form.submit %>
   </div>
 <% end %>
