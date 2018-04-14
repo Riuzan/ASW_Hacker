@@ -10,28 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180414113822) do
-
-  create_table "contributions", force: :cascade do |t|
-    t.string "title"
-    t.string "url"
-    t.text "text"
-    t.integer "votes", default: 0
-    t.integer "user_id"
-    t.integer "comment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["comment_id", "created_at"], name: "index_contributions_on_comment_id_and_created_at"
-    t.index ["comment_id"], name: "index_contributions_on_comment_id"
-    t.index ["user_id", "created_at"], name: "index_contributions_on_user_id_and_created_at"
-    t.index ["user_id"], name: "index_contributions_on_user_id"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema.define(version: 0) do
 
 end
