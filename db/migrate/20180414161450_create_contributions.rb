@@ -5,9 +5,10 @@ class CreateContributions < ActiveRecord::Migration[5.1]
       t.string :url
       t.text :text
       t.integer :votes, :default => 0
-      t.references :user, foreign_key: true
+      t.references :user, foreign_key: true, index: true
 
       t.timestamps
     end
-  end
+    add_index :contributions, [:user_id, :created_at]
+    end
 end
