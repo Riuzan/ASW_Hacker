@@ -4,12 +4,19 @@ class ContributionsController < ApplicationController
   # GET /contributions
   # GET /contributions.json
   def index
-    @contributions = Contribution.all
+    if params[:type] == 'url' 
+      @contributions = Contribution.where("contributions.titulo IS NOT NULL AND contributions.url IS NOT NULL");
+    else
+      @contributions = Contribution.where("contributions.titulo IS NOT NULL AND contributions.url IS NULL");
+    end
   end
 
   # GET /contributions/1
   # GET /contributions/1.json
   def show
+    query = "contributions.comment_id ="+@contribution.id.to_s
+    @comments = Contribution.where(query) 
+    @replies = Contribution.where("comment_id in (select c1.id from contributions c1 where c1.comment_id ="+@contribution.id.to_s+ ")")
   end
 
   # GET /contributions/new

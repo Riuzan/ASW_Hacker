@@ -1,4 +1,5 @@
 class Contribution < ApplicationRecord
   belongs_to :user
-  belongs_to :comment
+  has_one :comment, :class_name => 'Contribution'
+  validates :user_id, presence: true
 end
