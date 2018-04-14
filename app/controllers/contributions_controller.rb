@@ -5,9 +5,9 @@ class ContributionsController < ApplicationController
   # GET /contributions.json
   def index
     if params[:type] == 'url' 
-      @contributions = Contribution.where("contributions.titulo IS NOT NULL AND contributions.url IS NOT NULL");
+      @contributions = Contribution.where("contributions.title IS NOT NULL AND contributions.url IS NOT NULL");
     else
-      @contributions = Contribution.where("contributions.titulo IS NOT NULL AND contributions.url IS NULL");
+      @contributions = Contribution.where("contributions.title IS NOT NULL AND contributions.url IS NULL");
     end
   end
 
