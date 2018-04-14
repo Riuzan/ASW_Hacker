@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :user33s
   resources :contributions
   resources :users
   root 'users#index'
