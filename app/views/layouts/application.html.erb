@@ -1,14 +1,56 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>ASWHacker</title>
-    <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
+<head>
+  <title>HackerNews</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<center>
+  <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
+    <tr>
+      <td bgcolor="#ff6600">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
+          <tr>
+            <td style="width:18px;padding-right:4px">
+              <a href="http://www.ycombinator.com"><img src="https://news.ycombinator.com/y18.gif" width="18" height="18" style="border:1px white solid;"></a>
+            </td>
+            <td style="line-height:12pt; height:10px;">
+              <span class="pagetop">
+                <b class="brandname">
+                  <a href="/contributions">Hacker News</a>
+                </b>
+                <a href="/contributions?type=new">new</a> |
+                <% if current_user %>
+                  <a href="/contributions?type=threads">threads</a> |
+                <% end %>
+                <a href="/contributions?type=ask">ask</a> | 
+                <% if current_user %>
+                  <a href="/contributions/new">submit</a>
+                <%end%>
+              </span>
+            </td>
+            <td style="text-align:right;padding-right:4px;"> 
+              <% if current_user %>
+                <%= link_to current_user.name, current_user %>
+                <%= link_to 'Log Out', '/logout' %>
+              <% else %>
+                <a href="/auth/twitter">Login</a>
+                <!--<%= link_to 'New User', new_user_path %>-->
+              <%end%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr style="height:10px">
+    </tr>
+    <tr>
+      <td>
+        <%= yield %>
+      </td>
+    </tr>
+  </table>
+</body>
 </html>
