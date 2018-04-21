@@ -10,5 +10,5 @@ class CreateContributions < ActiveRecord::Migration[5.1]
       t.timestamps
     end
     add_index :contributions, [:user_id, :created_at]
-    end
+  end
 end

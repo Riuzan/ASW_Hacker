@@ -33,12 +33,11 @@
             </td>
             <td style="text-align:right;padding-right:4px;"> 
               <% if current_user %>
-                <%= link_to current_user.name, current_user %>
-                <%= link_to 'Log Out', '/logout' %>
+                Signed in as <strong><%= current_user.name %></strong>!
+                <%= link_to "Sign out", signout_path, id: "sign_out" %>
               <% else %>
-                <a href="/auth/twitter">Login</a>
-                <!--<%= link_to 'New User', new_user_path %>-->
-              <%end%>
+                <%= link_to "Sign in with Google", "/auth/google_oauth2", id: "sign_in" %>
+              <% end %>
             </td>
           </tr>
         </table>
