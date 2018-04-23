@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   get 'signout', to: 'sessions#destroy', as: 'signout'
   
   get 'contributions/index_new', to: 'contributions#index_new'
-
+  get '/reply' => 'contributions#reply'
+  
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]
   resources :contributions

@@ -18,8 +18,7 @@
         <td class="subtext">
           <span class="score"><%= contribution.votes %></span>
           points by
-          <%# <%= link_to contribution.user, contribution.user, :class=>"link" %> 
-          <%= link_to "eliasbenur", contribution.user, :class=>"link" %>
+          <a href="/users/<%=contribution.user_id%>"> <%= contribution.user.name %></a>
           <%= link_to time_ago_in_words(contribution.created_at)  + ' ago', contribution, :class=>"link" %>
           |
           <%= link_to "unvote", contribution.user, :class=>"link" %>

@@ -1,6 +1,8 @@
 class ContributionsController < ApplicationController
+  include SessionsHelper
   before_action :set_contribution, only: [:show, :edit, :update, :destroy]
-
+  
+  
   # GET /contributions
   # GET /contributions.json
   def index
@@ -18,6 +20,10 @@ class ContributionsController < ApplicationController
 
   # GET /contributions/new
   def new
+    unless is_logged_in?
+      redirect_to signin_path('google')
+      return
+    end
     @contribution = Contribution.new
   end
 
@@ -28,11 +34,27 @@ class ContributionsController < ApplicationController
   # POST /contributions
   # POST /contributions.json
   def create
+
     @contribution = Contribution.new(contribution_params)
 
+    if is_logged_in?
+      @contribution.user_id = current_user.id
+    end
     respond_to do |format|
-      if @contribution.save
+      if @contribution.title != nil && @contribution.save  #es post
         format.html { redirect_to @contribution, notice: 'Contribution was successfully created.' }
+        format.json { render :show, status: :created, location: @contribution }
+      elsif @contribution.title == nil && Contribution.find(@contribution.comment_id).title != nil && @contribution.save   #es un comentari d'un  post
+        @aux = Contribution.find(@contribution.comment_id)
+        @aux.totalComments = @aux.totalComments + 1
+        @aux.save
+        format.html { redirect_to Contribution.find(@contribution.comment_id), notice: 'Contribution was successfully created.' }
+        format.json { render :show, status: :created, location: @contribution }
+      elsif @contribution.title == nil && Contribution.find(@contribution.comment_id).title == nil && @contribution.save ##es un reply d'un comentari
+        @aux = Contribution.find(Contribution.find(@contribution.comment_id).comment_id)
+        @aux.totalComments = @aux.totalComments + 1
+        @aux.save
+        format.html { redirect_to Contribution.find(Contribution.find(@contribution.comment_id).comment_id), notice: 'Contribution was successfully created.' }
         format.json { render :show, status: :created, location: @contribution }
       else
         format.html { render :new }
