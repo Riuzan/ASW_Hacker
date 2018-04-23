@@ -6,6 +6,10 @@ class ContributionsController < ApplicationController
   def index
     @contributions = Contribution.all
   end
+  
+  def index_new
+    @contributions = Contribution.all
+  end
 
   # GET /contributions/1
   # GET /contributions/1.json
