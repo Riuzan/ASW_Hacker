@@ -42,7 +42,7 @@ class ContributionsController < ApplicationController
     end
     respond_to do |format|
       if @contribution.title != nil && @contribution.save  #es post
-        format.html { redirect_to @contribution, notice: 'Contribution was successfully created.' }
+        format.html { redirect_to "/contributions/index_new", notice: 'Contribution was successfully created.' }
         format.json { render :show, status: :created, location: @contribution }
       elsif @contribution.title == nil && Contribution.find(@contribution.comment_id).title != nil && @contribution.save   #es un comentari d'un  post
         @aux = Contribution.find(@contribution.comment_id)

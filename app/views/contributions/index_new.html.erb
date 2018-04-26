@@ -4,12 +4,12 @@
     <% @contributions.order(created_at: :DESC).first(10).each_with_index do |contribution, index| %>
       <tr class="athing">
         <td><%= index+1 %>.</td>
-        <% if current_user %>
-          <td>▲</td>
-        <% end %>
+          <td><% if current_user %>▲ <% end %></td>
         <td class="title">
           <%= link_to contribution.title, "http://#{contribution.url}", :class=>"link" %>
-          <span class="sitebit comhead">(<%= contribution.url %>)</span>
+            <% if contribution.url!="" %>
+             <span class="sitebit comhead">(<%= contribution.url %>)</span>
+            <% end %>
         </td>
       </tr>
       <tr class="subtext">
@@ -17,7 +17,7 @@
         <td class="subtext">
           <span class="score"><%= contribution.votes %></span>
           points by
-          <% <%= link_to contribution.user, contribution.user, :class=>"link" %> 
+          <a href="/users/<%=contribution.user_id%>"> <%= contribution.user.name %></a>
           <%#= link_to "eliasbenur", contribution.user, :class=>"link" %>
           <%= link_to time_ago_in_words(contribution.created_at)  + ' ago', contribution, :class=>"link" %>
           |
