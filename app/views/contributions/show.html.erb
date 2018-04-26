@@ -1,3 +1,61 @@
+<br>
+<table>
+  <tr class="athing">
+    <td><% if current_user %>▲<% end %></td>
+    <td class="title">
+      <% if @contribution.url!="" %>
+        <%= link_to @contribution.title, "http://#{@contribution.url}", :class=>"link" %>
+        <span class="sitebit comhead">(<%= @contribution.url %>)</span>
+      <% end %>
+      <% if @contribution.url=="" %>
+        <%= link_to @contribution.title, @contribution, :class=>"link" %>
+      <% end %>
+    </td>
+  </tr>
+  <tr class="subtext">
+    <td colspan="1"></td>
+    <td class="subtext">
+      <span class="score"><%= @contribution.votes %></span>
+      points by
+      <a href="/users/<%= @contribution.user_id %>"> <%= @contribution.user.name %></a>
+      <%#= link_to "eliasbenur", contribution.user, :class=>"link" %>
+      <%= link_to time_ago_in_words(@contribution.created_at)  + ' ago', @contribution, :class=>"link" %>
+      |
+      <%= link_to "unvote", @contribution.user, :class=>"link" %>
+      |
+      <%= link_to "hide", @contribution.user, :class=>"link" %>
+      |
+      <%= link_to "x comments", @contribution.user, :class=>"link" %>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <br>
+      <%= form_for @contribution, url: {action: "create"}, html: {class: "nifty_form"} do |f| %>
+        <%= text_area_tag(:text, "", size: "60x12") %>
+        <br><br>
+        <%= label_tag(:text, "If you haven't already, would you mind reading about HN's approach to comments and site guidelines?") %>
+        <br><br>
+        <%= f.submit "add comment" %>
+      <% end %>
+      <br>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td> </td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
+
 <p id="notice"><%= notice %></p>
 
 <p>

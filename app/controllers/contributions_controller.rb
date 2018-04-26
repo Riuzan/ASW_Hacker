@@ -16,6 +16,7 @@ class ContributionsController < ApplicationController
   # GET /contributions/1
   # GET /contributions/1.json
   def show
+    @contributions = Contribution.new
   end
 
   # GET /contributions/new
