@@ -8,7 +8,12 @@ Rails.application.routes.draw do
   
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]
-  resources :contributions
+  resources :contributions do 
+  member do
+    put "upvote", to: "contributions#upvote"
+    put "unvote", to: "contributions#unvote"
+  end
+end
   resources :users
   root 'contributions#index'
 end
