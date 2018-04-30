@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   
   get 'contributions/index_new', to: 'contributions#index_new'
   get '/reply' => 'contributions#reply'
+  get "contributions/ask" => "contributions#ask"
   
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]

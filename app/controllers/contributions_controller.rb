@@ -6,17 +6,22 @@ class ContributionsController < ApplicationController
   # GET /contributions
   # GET /contributions.json
   def index
-    @contributions = Contribution.all
+    @contributions = Contribution.select{ |c| c.url != ""}.sort { |x,y| y.get_likes.size <=> x.get_likes.size }.first(30)
   end
   
   def index_new
-    @contributions = Contribution.all
+    @contributions = Contribution.all.order(created_at: :DESC).first(30)
   end
+
 
   # GET /contributions/1
   # GET /contributions/1.json
   def show
     @contributions = Contribution.new
+  end
+  
+   def ask
+    @contributions = Contribution.all.order(created_at: :DESC).select{ |c| c.url == ""}.first(30)
   end
 
   # GET /contributions/new
