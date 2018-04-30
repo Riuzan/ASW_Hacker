@@ -10,19 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180429161312) do
+ActiveRecord::Schema.define(version: 20180430222823) do
+
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
+    t.integer "commentable_id"
+    t.string "commentable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+  end
 
   create_table "contributions", force: :cascade do |t|
     t.string "title"
     t.string "url"
     t.text "text"
-    t.string "type"
     t.integer "votes", default: 0
     t.integer "user_id"
-    t.integer "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_contributions_on_parent_id"
+    t.string "comment_id"
+    t.integer "total_Comments"
+    t.string "comment_type"
     t.index ["user_id", "created_at"], name: "index_contributions_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_contributions_on_user_id"
   end

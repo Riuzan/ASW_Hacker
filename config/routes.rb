@@ -7,14 +7,21 @@ Rails.application.routes.draw do
   get '/reply' => 'contributions#reply'
   get "contributions/ask" => "contributions#ask"
   
+  
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]
   resources :contributions do 
-  member do
-    put "upvote", to: "contributions#upvote"
-    put "unvote", to: "contributions#unvote"
+      member do
+        put "upvote", to: "contributions#upvote"
+        put "unvote", to: "contributions#unvote"
+        resources :comments
+    end
   end
-end
+  
+  resources :comments do
+    resources :comments
+  end
+  
   resources :users
   root 'contributions#index'
 end

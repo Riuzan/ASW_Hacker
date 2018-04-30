@@ -17,10 +17,11 @@ class ContributionsController < ApplicationController
   # GET /contributions/1
   # GET /contributions/1.json
   def show
-    @contributions = Contribution.new
+    #@contributions = Contribution.all
+    @contribution = Contribution.find(params[:id])
   end
   
-   def ask
+  def ask
     @contributions = Contribution.all.order(created_at: :DESC).select{ |c| c.url == ""}.first(30)
   end
 
@@ -50,17 +51,12 @@ class ContributionsController < ApplicationController
       if @contribution.title != nil && @contribution.save  #es post
         format.html { redirect_to "/contributions/index_new", notice: 'Contribution was successfully created.' }
         format.json { render :show, status: :created, location: @contribution }
-      elsif @contribution.title == nil && Contribution.find(@contribution.comment_id).title != nil && @contribution.save   #es un comentari d'un  post
+      elsif @contribution.title == nil && @contribution.comment_id != nil && @contribution.save   #es un comentari o un reply d'un  post
         @aux = Contribution.find(@contribution.comment_id)
-        @aux.totalComments = @aux.totalComments + 1
+        @aux.total_Comments ||= 0
+        @aux.total_Comments = @aux.total_Comments + 1
         @aux.save
         format.html { redirect_to Contribution.find(@contribution.comment_id), notice: 'Contribution was successfully created.' }
-        format.json { render :show, status: :created, location: @contribution }
-      elsif @contribution.title == nil && Contribution.find(@contribution.comment_id).title == nil && @contribution.save ##es un reply d'un comentari
-        @aux = Contribution.find(Contribution.find(@contribution.comment_id).comment_id)
-        @aux.totalComments = @aux.totalComments + 1
-        @aux.save
-        format.html { redirect_to Contribution.find(Contribution.find(@contribution.comment_id).comment_id), notice: 'Contribution was successfully created.' }
         format.json { render :show, status: :created, location: @contribution }
       else
         format.html { render :new }
@@ -112,7 +108,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:contribution).permit(:title, :url, :text, :votes, :user_id)
+      params.require(:contribution).permit(:title, :url, :text, :votes, :user_id, :comment_id)
     end
     
   
