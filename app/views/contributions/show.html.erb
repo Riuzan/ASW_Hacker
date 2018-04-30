@@ -1,7 +1,9 @@
 <br>
 <table>
   <tr class="athing">
-    <td><% if current_user %>▲<% end %></td>
+    <td><% if current_user and not current_user.liked? @contribution %><%= link_to upvote_contribution_path(@contribution), method: :put do %>
+               ▲  
+         <% end %><% end %></td>
     <td class="title">
       <% if @contribution.url!="" %>
         <%= link_to @contribution.title, "http://#{@contribution.url}", :class=>"link" %>
@@ -15,14 +17,14 @@
   <tr class="subtext">
     <td colspan="1"></td>
     <td class="subtext">
-      <span class="score"><%= @contribution.votes %></span>
+      <span class="score"><%= @contribution.get_likes.size %></span>
       points by
       <a href="/users/<%= @contribution.user_id %>"> <%= @contribution.user.name %></a>
       <%#= link_to "eliasbenur", contribution.user, :class=>"link" %>
       <%= link_to time_ago_in_words(@contribution.created_at)  + ' ago', @contribution, :class=>"link" %>
       |
-      <%= link_to "unvote", @contribution.user, :class=>"link" %>
-      |
+      <% if current_user and current_user.liked? @contribution %><%= link_to unvote_contribution_path(@contribution), method: :put do %>
+               unvote<% end %> |<% end %>
       <%= link_to "hide", @contribution.user, :class=>"link" %>
       |
       <%= link_to "x comments", @contribution.user, :class=>"link" %>
