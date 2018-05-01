@@ -1,14 +1,10 @@
 <li>
-  <%= comment.body %> -
-  <small>Submitted <%= time_ago_in_words(comment.created_at) %> ago</small>
-
-  <%= form_for [comment, Comment.new] do |f| %>
-  <%= f.text_area :body, placeholder: "Add a Reply" %><br/>
-  <%= f.submit "Reply"  %>
-  <% end %>
-  
-
-  <ul>
+  <a href="/users/<%=comment.user_id%>"> <%= comment.user.name %></a>
+  <small> <%= time_ago_in_words(comment.created_at) %> ago</small> 
+  <br><br>
+  <span style="margin-top: 25px;" class="link"><%= comment.body %> </span> <br><br>
+  <%= link_to "reply", comment %>
+  <ul style="padding-top:20px;">
       <%= render partial: 'comments/comment', collection: comment.comments %>
   </ul>
 

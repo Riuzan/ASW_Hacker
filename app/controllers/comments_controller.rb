@@ -1,5 +1,10 @@
 class CommentsController < ApplicationController
+include SessionsHelper
 before_action :find_commentable
+
+    def show
+      @comment = Comment.find(params[:id])
+    end
 
     def new
       @comment = Comment.new
@@ -7,18 +12,25 @@ before_action :find_commentable
 
     def create
       @comment = @commentable.comments.new comment_params
-
-      if @comment.save
-        redirect_back fallback_location: root_path, notice: 'Your comment was successfully posted!'
-      else
-        redirect_to :back, notice: "Your comment wasn't posted!"
+      if is_logged_in?
+        @comment.user_id = current_user.id
+      end
+      respond_to do |format|
+        if @comment.save
+          #redirect_back fallback_location: root_path, notice: 'Your comment was successfully posted!'
+          format.html { redirect_back fallback_location: root_path, notice: 'Contribution was successfully created.' }
+          format.json { render :show, status: :created, location: @comment }
+        else
+          format.html { render :new }
+          format.json { render json: @comment.errors, status: :unprocessable_entity }
+        end
       end
     end
 
     private
 
     def comment_params
-      params.require(:comment).permit(:body)
+      params.require(:comment).permit(:body, :user_id)
     end
 
     def find_commentable

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/reply' => 'contributions#reply'
   get "contributions/ask" => "contributions#ask"
   
+  get 'contributions/comments/reply', to: 'comments#reply'
   
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]

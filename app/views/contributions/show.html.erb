@@ -35,14 +35,14 @@
     <td></td>
     <td>
       <br>
-      <%= form_for "contribution/create", url: {action: "create"}, html: {class: "nifty_form" } do |f| %>
-        <%= hidden_field_tag "contribution[comment_id]", "#{@contribution.id}" %>
-        <%= text_area_tag("contribution[text]", "", size: "60x12") %>
-        <br><br>
-        <%= label_tag("contribution[text]", "If you haven't already, would you mind reading about HN's approach to comments and site guidelines?") %>
-        <br><br>
-        <%= f.submit "add comment" %>
-      <% end %>
+        <%= form_for "contribution/create", url: {action: "create"}, html: {class: "nifty_form", style: 'margin-left: 30px;'} do |f| %>
+          <%= hidden_field_tag "contribution[comment_id]", "#{@contribution.id}" %>
+          <%= text_area_tag("contribution[text]", "", size: "60x12") %>
+          <br><br>
+          <%= label_tag("contribution[text]", "If you haven't already, would you mind reading about HN's approach to comments and site guidelines?") %>
+          <br><br>
+          <%= f.submit "add comment" %>
+        <% end %>
       <br>
     </td>
     <% end %>
@@ -52,7 +52,7 @@
     <td></td>
   </tr>
 </table>
-<%= form_for [ Comment.new] do |f| %>
+<%= form_for [ Comment.new], html: {class: "nifty_form", style: 'margin-left: 30px;'} do |f| %>
   <%= f.text_area :body, placeholder: "Add a comment" %><br/>
   <%= f.submit "Add Comment" %>
 <% end %>
