@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'contributions/index_new', to: 'contributions#index_new'
   get '/reply' => 'contributions#reply'
   get "contributions/ask" => "contributions#ask"
-  
+  get "comments/threads" => "comments#threads"
   get 'contributions/comments/reply', to: 'comments#reply'
   
   resources :sessions, only: [:create, :destroy]

@@ -10,6 +10,7 @@ before_action :find_commentable
      @comment = Comment.new
     end
 
+
     def create
       @comment = @commentable.comments.new comment_params
       if is_logged_in?
