@@ -17,12 +17,14 @@ gem 'rails', '~> 5.1.5'
 gem "omniauth-google-oauth2", "~> 0.2.1"
 
 
-
+gem 'acts_as_votable', '~> 0.11.1'
+  
 group :development, :test do
   gem 'sqlite3'
-  gem 'acts_as_votable', '~> 0.11.1'
 end
+
 group :production do
+
 gem 'pg'
 end
 # Use Puma as the app server
