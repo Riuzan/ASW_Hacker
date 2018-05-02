@@ -1,7 +1,9 @@
 <br>
 <table>
   <tr class="athing">
-    <td><% if current_user %>▲<% end %></td>
+    <td><% if current_user and not current_user.liked? @contribution %><%= link_to upvote_contribution_path(@contribution), method: :put do %>
+               ▲  
+         <% end %><% end %></td>
     <td class="title">
       <% if @contribution.url!="" %>
         <%= link_to @contribution.title, "http://#{@contribution.url}", :class=>"link" %>
@@ -15,73 +17,46 @@
   <tr class="subtext">
     <td colspan="1"></td>
     <td class="subtext">
-      <span class="score"><%= @contribution.votes %></span>
+      <span class="score"><%= @contribution.get_likes.size %></span>
       points by
       <a href="/users/<%= @contribution.user_id %>"> <%= @contribution.user.name %></a>
       <%#= link_to "eliasbenur", contribution.user, :class=>"link" %>
       <%= link_to time_ago_in_words(@contribution.created_at)  + ' ago', @contribution, :class=>"link" %>
       |
-      <%= link_to "unvote", @contribution.user, :class=>"link" %>
-      |
+      <% if current_user and current_user.liked? @contribution %><%= link_to unvote_contribution_path(@contribution), method: :put do %>
+               unvote<% end %> |<% end %>
       <%= link_to "hide", @contribution.user, :class=>"link" %>
       |
-      <%= link_to "x comments", @contribution.user, :class=>"link" %>
+      <%= link_to @contribution.comments.size.to_s +  " comments", @contribution, :class=>"link" %>
     </td>
   </tr>
+  <% if false %>
   <tr>
     <td></td>
     <td>
       <br>
-      <%= form_for @contribution, url: {action: "create"}, html: {class: "nifty_form"} do |f| %>
-        <%= text_area_tag(:text, "", size: "60x12") %>
-        <br><br>
-        <%= label_tag(:text, "If you haven't already, would you mind reading about HN's approach to comments and site guidelines?") %>
-        <br><br>
-        <%= f.submit "add comment" %>
-      <% end %>
+        <%= form_for "contribution/create", url: {action: "create"}, html: {class: "nifty_form", style: 'margin-left: 30px;'} do |f| %>
+          <%= hidden_field_tag "contribution[comment_id]", "#{@contribution.id}" %>
+          <%= text_area_tag("contribution[text]", "", size: "60x12") %>
+          <br><br>
+          <%= label_tag("contribution[text]", "If you haven't already, would you mind reading about HN's approach to comments and site guidelines?") %>
+          <br><br>
+          <%= f.submit "add comment" %>
+        <% end %>
       <br>
     </td>
+    <% end %>
   </tr>
   <tr>
     <td></td>
-    <td> </td>
+    <td></td>
   </tr>
 </table>
+<%= form_for [ Comment.new], html: {class: "nifty_form", style: 'margin-left: 30px;'} do |f| %>
+  <%= f.text_area :body, placeholder: "Add a comment" %><br/>
+  <%= f.submit "Add Comment" %>
+<% end %>
+<ul>
+  <%= render(partial: 'comments/comment', collection: @contribution.comments) %>
+</ul>
 
-
-
-
-
-
-
-
-
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @contribution.title %>
-</p>
-
-<p>
-  <strong>Url:</strong>
-  <%= @contribution.url %>
-</p>
-
-<p>
-  <strong>Text:</strong>
-  <%= @contribution.text %>
-</p>
-
-<p>
-  <strong>Votes:</strong>
-  <%= @contribution.votes %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @contribution.user %>
-</p>
-
-<%= link_to 'Edit', edit_contribution_path(@contribution) %> |
-<%= link_to 'Back', contributions_path %>

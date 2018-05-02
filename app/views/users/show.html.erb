@@ -15,4 +15,6 @@
   <%= @user.email %>
 </p>
 
+<% if current_user.id == @user.id %>
 <%= link_to 'Edit', edit_user_path(@user) %> |
+

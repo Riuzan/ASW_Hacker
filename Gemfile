@@ -20,6 +20,7 @@ gem "omniauth-google-oauth2", "~> 0.2.1"
 
 group :development, :test do
   gem 'sqlite3'
+  gem 'acts_as_votable', '~> 0.11.1'
 end
 group :production do
 gem 'pg'

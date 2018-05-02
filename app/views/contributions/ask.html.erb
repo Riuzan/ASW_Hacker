@@ -8,13 +8,7 @@
                ▲  
          <% end %><% end %></td>
         <td class="title">
-          <% if contribution.url!="" %>
-            <%= link_to contribution.title, "http://#{contribution.url}", :class=>"link" %>
-            <span class="sitebit comhead">(<%= contribution.url %>)</span>
-          <% end %>
-          <% if contribution.url=="" %>
             <%= link_to contribution.title, contribution, :class=>"link" %>
-          <% end %>
         </td>
       </tr>
       <tr class="subtext">
@@ -30,7 +24,7 @@
                unvote<% end %> |<% end %>
           <%= link_to "hide", contribution.user, :class=>"link" %>
           |
-          <%= link_to contribution.comments.size.to_s +  " comments", contribution, :class=>"link" %>
+            <%= link_to contribution.comments.size.to_s +  " comments", contribution, :class=>"link" %>
         </td>
       </tr>
     <% end %>
@@ -38,4 +32,3 @@
 </table>
 
 <br>
-

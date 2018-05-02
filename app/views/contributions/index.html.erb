@@ -2,35 +2,44 @@
   <tbody>
     <tr style="height:10px"></tr>
     <%# Faltaria filtrar para que se muestren solo los de tipo URL %>
-    <% @contributions.order(votes: :DESC).first(30).each_with_index do |contribution, index| %>
+    <% @contributions.each_with_index do |contribution, index| %>
       <% if contribution.url!="" %>
         <tr class="athing">
           <td><%= index+1 %>.</td>
-            <td><% if current_user %>▲<% end %></td>
+            <td><% if current_user and not current_user.liked? contribution %><%= link_to upvote_contribution_path(contribution), method: :put do %>
+               ▲  
+         <% end %><% end %></td>
           <td class="title">
-              <%= link_to contribution.title, "http://#{contribution.url}", :class=>"link" %>
-              <span class="sitebit comhead">(<%= contribution.url %>)</span>
+              <% if contribution.url!="" %>
+            <%= link_to contribution.title, "http://#{contribution.url}", :class=>"link" %>
+            <span class="sitebit comhead">(<%= contribution.url %>)</span>
+          <% end %>
+          <% if contribution.url=="" %>
+            <%= link_to contribution.title, contribution, :class=>"link" %>
+          <% end %>
             
           </td>
         </tr>
         <tr class="subtext">
           <td colspan="2"></td>
           <td class="subtext">
-            <span class="score"><%= contribution.votes %></span>
+            <span class="score"><%= contribution.get_likes.size %></span>
             points by
             <a href="/users/<%=contribution.user_id%>"> <%= contribution.user.name %></a>
             <%= link_to time_ago_in_words(contribution.created_at)  + ' ago', contribution, :class=>"link" %>
             |
-            <%= link_to "unvote", contribution.user, :class=>"link" %>
-            |
+            <% if current_user and current_user.liked? contribution %><%= link_to unvote_contribution_path(contribution), method: :put do %>
+               unvote<% end %> |<% end %>
             <%= link_to "hide", contribution.user, :class=>"link" %>
             |
-            <%= link_to "x comments", contribution.user, :class=>"link" %>
+              <%= link_to contribution.comments.size.to_s +  " comments", contribution, :class=>"link" %>
           </td>
       </tr>
       <% end %>
+      
     <% end %>
   </tbody>
+  
 </table>
 
 <br>

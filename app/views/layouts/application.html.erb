@@ -21,17 +21,11 @@
                 <b class="brandname">
                   <a href="/contributions">Hacker News</a>
                 </b>
-                <% if current_user %>
-                  <a href="/contributions?type=welcome">welcome</a> |
-                <% end %>
                 <a href="/contributions/index_new">new</a> |
                 <% if current_user %>
                   <a href="/contributions?type=threads">threads</a> |
                 <% end %>
-                <a href="/contributions?type=comments">comments</a> |
-                <a href="/contributions?type=show">show</a> |
-                <a href="/contributions?type=ask">ask</a> | 
-                <a href="/contributions?type=jobs">jobs</a> |
+                <a href="/contributions/ask">ask</a> | 
                 <% if current_user %>
                   <a href="/contributions/new">submit</a>
                 <%end%>

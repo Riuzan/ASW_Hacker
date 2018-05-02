@@ -5,10 +5,28 @@ Rails.application.routes.draw do
   
   get 'contributions/index_new', to: 'contributions#index_new'
   get '/reply' => 'contributions#reply'
+  get "contributions/ask" => "contributions#ask"
+  
+  get 'contributions/comments/reply', to: 'comments#reply'
   
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]
-  resources :contributions
+  resources :contributions do 
+      member do
+        put "upvote", to: "contributions#upvote"
+        put "unvote", to: "contributions#unvote"
+        resources :comments
+    end
+  end
+  
+  resources :comments do
+    resources :comments
+     member do
+        put "upvote", to: "comments#upvote"
+        put "unvote", to: "comments#unvote"
+    end
+  end
+  
   resources :users
   root 'contributions#index'
 end
