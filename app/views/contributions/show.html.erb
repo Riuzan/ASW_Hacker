@@ -27,7 +27,7 @@
                unvote<% end %> |<% end %>
       <%= link_to "hide", @contribution.user, :class=>"link" %>
       |
-      <%= link_to "x comments", @contribution.user, :class=>"link" %>
+      <%= link_to @contribution.comments.size.to_s +  " comments", @contribution, :class=>"link" %>
     </td>
   </tr>
   <% if false %>

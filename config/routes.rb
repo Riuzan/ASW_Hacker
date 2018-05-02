@@ -21,6 +21,10 @@ Rails.application.routes.draw do
   
   resources :comments do
     resources :comments
+     member do
+        put "upvote", to: "comments#upvote"
+        put "unvote", to: "comments#unvote"
+    end
   end
   
   resources :users

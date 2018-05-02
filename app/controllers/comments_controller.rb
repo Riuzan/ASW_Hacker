@@ -7,7 +7,7 @@ before_action :find_commentable
     end
 
     def new
-      @comment = Comment.new
+     @comment = Comment.new
     end
 
     def create
@@ -26,7 +26,17 @@ before_action :find_commentable
         end
       end
     end
+  def upvote 
+    @comment = Comment.find(params[:id])
+    @comment.liked_by current_user
+    redirect_back(fallback_location: root_path)
+  end  
 
+  def unvote
+    @comment = Comment.find(params[:id])
+    @comment.unliked_by current_user
+     redirect_back(fallback_location: root_path)
+  end
     private
 
     def comment_params

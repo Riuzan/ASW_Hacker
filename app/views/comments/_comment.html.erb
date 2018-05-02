@@ -1,6 +1,12 @@
 <li>
+  <% if current_user and not current_user.liked? comment %><%= link_to upvote_comment_path(comment), method: :put do %>
+               ▲  
+         <% end %><% end %>
   <a href="/users/<%=comment.user_id%>"> <%= comment.user.name %></a>
-  <small> <%= time_ago_in_words(comment.created_at) %> ago</small> 
+  <small> <%= time_ago_in_words(comment.created_at) %> ago</small>
+   | <%= comment.get_likes.size %> points 
+   <% if current_user and current_user.liked? comment %> | <%= link_to unvote_comment_path(comment), method: :put do %>
+               unvote<% end %><% end %>
   <br><br>
   <span style="margin-top: 25px;" class="link"><%= comment.body %> </span> <br><br>
   <%= link_to "reply", comment %>

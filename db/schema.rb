@@ -25,13 +25,15 @@ ActiveRecord::Schema.define(version: 20180430222823) do
     t.string "title"
     t.string "url"
     t.text "text"
+    t.string "type"
     t.integer "votes", default: 0
     t.integer "user_id"
+    t.integer "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "comment_id"
     t.integer "total_Comments"
     t.string "comment_type"
+    t.index ["parent_id"], name: "index_contributions_on_parent_id"
     t.index ["user_id", "created_at"], name: "index_contributions_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_contributions_on_user_id"
   end

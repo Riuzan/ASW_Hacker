@@ -1,7 +1,7 @@
 <h1>Testing</h1>
 <%= @comment.body %>
 
-  <%= form_for [@comment, Comment.new] do |f| %>
+  <%= form_for [@comment,Comment.new] do |f| %>
   <%= f.text_area :body, placeholder: "Add a Reply" %><br/>
   <%= f.submit "Reply"  %>
   <% end %>
