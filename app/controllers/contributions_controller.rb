@@ -49,14 +49,14 @@ class ContributionsController < ApplicationController
     end
     respond_to do |format|
       if @contribution.title != nil && @contribution.save  #es post
-        format.html { redirect_to "/contributions/index_new", notice: 'Contribution was successfully created.' }
+        format.html { redirect_to "/contributions/index_new"}
         format.json { render :show, status: :created, location: @contribution }
       elsif @contribution.title == nil && @contribution.comment_id != nil && @contribution.save   #es un comentari o un reply d'un  post
         @aux = Contribution.find(@contribution.comment_id)
         @aux.total_Comments ||= 0
         @aux.total_Comments = @aux.total_Comments + 1
         @aux.save
-        format.html { redirect_to Contribution.find(@contribution.comment_id), notice: 'Contribution was successfully created.' }
+        format.html { redirect_to Contribution.find(@contribution.comment_id)}
         format.json { render :show, status: :created, location: @contribution }
       else
         format.html { render :new }
@@ -70,7 +70,7 @@ class ContributionsController < ApplicationController
   def update
     respond_to do |format|
       if @contribution.update(contribution_params)
-        format.html { redirect_to @contribution, notice: 'Contribution was successfully updated.' }
+        format.html { redirect_to @contribution }
         format.json { render :show, status: :ok, location: @contribution }
       else
         format.html { render :edit }
@@ -84,7 +84,7 @@ class ContributionsController < ApplicationController
   def destroy
     @contribution.destroy
     respond_to do |format|
-      format.html { redirect_to contributions_url, notice: 'Contribution was successfully destroyed.' }
+      format.html { redirect_to contributions_url }
       format.json { head :no_content }
     end
   end
