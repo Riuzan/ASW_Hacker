@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Els membres d'aquest equip som:
 
-Things you may want to cover:
+- Ismael Julià Reifs
 
-* Ruby version
+- Marc Peña Sahunt
 
-* System dependencies
+- Jose Ignacio Bustamante Vargas
 
-* Configuration
+- Elias Bennour Essabbaq
 
-* Database creation
+El link de la nostra app desplegada a heroku és :
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+https://aqueous-crag-95083.herokuapp.com/
