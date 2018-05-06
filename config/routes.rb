@@ -12,18 +12,18 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]
   resources :contributions do 
-      member do
-        put "upvote", to: "contributions#upvote"
-        put "unvote", to: "contributions#unvote"
-        resources :comments
+    resources :comments
+    member do
+      put "upvote", to: "contributions#upvote"
+      put "unvote", to: "contributions#unvote"
     end
   end
   
   resources :comments do
     resources :comments
-     member do
-        put "upvote", to: "comments#upvote"
-        put "unvote", to: "comments#unvote"
+    member do
+      put "upvote", to: "comments#upvote"
+      put "unvote", to: "comments#unvote"
     end
   end
   

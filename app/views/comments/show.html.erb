@@ -1,7 +1,8 @@
-<h1>Testing</h1>
+<h1>Replying</h1>
 <%= @comment.body %>
-
+<br/>
   <%= form_for [@comment,Comment.new] do |f| %>
+  <%= hidden_field_tag "contribution_id", "#{@contribution.id}" %>
   <%= f.text_area :body, placeholder: "Add a Reply" %><br/>
   <%= f.submit "Reply"  %>
   <% end %>

@@ -9,7 +9,7 @@
                unvote<% end %><% end %>
   <br><br>
   <span style="margin-top: 25px;" class="link"><%= comment.body %> </span> <br><br>
-  <%= link_to "reply", comment %>
+  <%= link_to "reply", contribution_path + "/comments/" + comment.id.to_s%>
   <ul style="padding-top:20px;">
       <%= render partial: 'comments/comment', collection: comment.comments %>
   </ul>

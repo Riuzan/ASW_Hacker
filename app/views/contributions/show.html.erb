@@ -14,6 +14,10 @@
       <% end %>
     </td>
   </tr>
+  <tr>
+    <td></td>
+    <td><%= @contribution.text %></td>
+  </tr>
   <tr class="subtext">
     <td colspan="1"></td>
     <td class="subtext">
@@ -52,7 +56,7 @@
     <td></td>
   </tr>
 </table>
-<%= form_for [ Comment.new], html: {class: "nifty_form", style: 'margin-left: 30px;'} do |f| %>
+<%= form_for [ @contribution, Comment.new], html: {class: "nifty_form", style: 'margin-left: 30px;'} do |f| %>
   <%= f.text_area :body, placeholder: "Add a comment" %><br/>
   <%= f.submit "Add Comment" %>
 <% end %>
