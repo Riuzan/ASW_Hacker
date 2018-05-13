@@ -27,6 +27,11 @@ Rails.application.routes.draw do
     end
   end
   
+  namespace :api do 
+      get "users/:id", to: "/users#apiShow"
+      put "users/:id", to: "/users#apiEdit"
+      patch "users/:id", to: "/users#apiEdit"
+  end
   resources :users
   root 'contributions#index'
 end

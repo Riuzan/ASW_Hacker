@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-
+  skip_before_action :verify_authenticity_token, :only=> :apiEdit
+  
   # GET /users
   # GET /users.json
   def index
@@ -11,6 +12,13 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
   end
+  
+  # GET /api/users/1
+  # GET /api/users/1.json
+  def apiShow
+    @user = User.where(["id = ?", params[:id]]).select("id, name, email, about, created_at, updated_at, oauth_token")
+    render json: {status: 'SUCCES', message: 'Loaded contributions', data:@user}, status: :ok
+  end
 
   # GET /users/new
   def new
@@ -20,12 +28,13 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
   end
+  
+  
 
   # POST /users
   # POST /users.json
   def create
     @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -49,6 +58,21 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  # PUT/PATCH /api/users/1
+  def apiEdit
+    key = request.headers["X-API-KEY"]
+    @user = User.find(params[:id])
+      if @user.token == key
+        if  @user.update(user_params)
+          render json: {status: 'SUCCES', message: 'User has been updated', data:[]}, status: :ok
+        else
+          render json: {status: 'ERROR', message: 'Could not update the user', data:[]}, status: :ok
+        end
+      else 
+        render json: {status: 'ERROR', message: 'Authentication error', data:[]}, status: :ok
+      end
   end
 
   # DELETE /users/1

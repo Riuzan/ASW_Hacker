@@ -25,13 +25,15 @@ ActiveRecord::Schema.define(version: 20180506192524) do
     t.string "title"
     t.string "url"
     t.text "text"
+    t.string "type"
     t.integer "votes", default: 0
     t.integer "user_id"
+    t.integer "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "comment_id"
     t.integer "total_Comments"
     t.string "comment_type"
+    t.index ["parent_id"], name: "index_contributions_on_parent_id"
     t.index ["url"], name: "index_contributions_on_url", unique: true
     t.index ["user_id", "created_at"], name: "index_contributions_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_contributions_on_user_id"
@@ -41,8 +43,10 @@ ActiveRecord::Schema.define(version: 20180506192524) do
     t.string "provider"
     t.string "uid"
     t.string "name"
+    t.string "about"
     t.string "email"
     t.string "oauth_token"
+    t.string "token"
     t.datetime "oauth_expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
