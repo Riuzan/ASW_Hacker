@@ -76,6 +76,9 @@ class ContributionsController < ApplicationController
       @contribution.user_id = current_user.id
     end
     respond_to do |format|
+      if @contribution.url == ""
+        @contribution.url = nil
+      end
       if @contribution.title != nil && @contribution.save  #es post
         format.html { redirect_to "/contributions/index_new"}
         format.json { render :show, status: :created, location: @contribution }
