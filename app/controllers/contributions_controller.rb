@@ -99,7 +99,7 @@ class ContributionsController < ApplicationController
   # POST /api/users/:id/contributions/ask
   def apiCreateAsk
 
-    @contribution = Contribution.new(params.require(:contribution).permit(:title, :text))
+    @contribution = Contribution.new(params.permit(:title, :text))
     @contribution.user_id = params[:id]
     @contribution.url = nil
       if @contribution.title != nil && @contribution.save  #es post
