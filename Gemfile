@@ -16,7 +16,7 @@ gem 'rails', '~> 5.1.5'
 #new gem
 gem "omniauth-google-oauth2", "~> 0.2.1"
 
-
+gem 'rack-cors'
 gem 'acts_as_votable', '~> 0.11.1'
   
 group :development, :test do
