@@ -65,7 +65,7 @@ class UsersController < ApplicationController
     key = request.headers["X-API-KEY"]
     @user = User.find(params[:id])
       if @user.token == key
-        if  @user.update(user_params)
+        if  @user.update(params.permit(:name, :about, :email))
           render json: {status: 'SUCCES', message: 'User has been updated', data:[]}, status: :ok
         else
           render json: {status: 'ERROR', message: 'Could not update the user', data:[]}, status: :internal_server_error

@@ -35,7 +35,7 @@ skip_before_action :verify_authenticity_token, only: [:apiCreate, :apiCreateRepl
   
   
   def apiCreate
-    @comment = @commentable.comments.new params.require(:comment).permit(:body)
+    @comment = @commentable.comments.new params.permit(:body)
     @comment.commentable_type = "Contribution"
     @comment.commentable_id = params[:commentable_id]
     @comment.user_id = params[:id]
@@ -50,7 +50,7 @@ skip_before_action :verify_authenticity_token, only: [:apiCreate, :apiCreateRepl
   end
   
   def apiCreateReply
-    @comment = @commentable.comments.new params.require(:comment).permit(:body)
+    @comment = @commentable.comments.new params.permit(:body)
     @comment.commentable_type = "Comment"
     @comment.commentable_id = params[:commentable_id]
     @comment.user_id = params[:id]

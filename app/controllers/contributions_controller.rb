@@ -114,7 +114,7 @@ class ContributionsController < ApplicationController
   # POST /api/users/:id/contributions/url
   def apiCreateUrl
 
-    @contribution = Contribution.new(params.require(:contribution).permit(:title, :url))
+    @contribution = Contribution.new(params.permit(:title, :url))
     @contribution.user_id = params[:id]
     @contribution.text = nil
       if @contribution.title != nil && @contribution.save  #es post
