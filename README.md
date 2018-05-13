@@ -12,4 +12,4 @@ Els membres d'aquest equip som:
 
 El link de la nostra app desplegada a heroku és :
 
-https://aqueous-crag-95083.herokuapp.com/
+https://salty-beyond-71147.herokuapp.com
