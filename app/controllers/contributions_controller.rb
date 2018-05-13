@@ -154,7 +154,7 @@ class ContributionsController < ApplicationController
   # DELETE /api/contributions/1
   # DELETE /api/contributions/1.json
   def apiDelete
-    @contribution = Contribution.find(params[:id])
+    @contribution = Contribution.find(params[:idc])
     @contribution.destroy
   end
 

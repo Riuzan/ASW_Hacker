@@ -114,7 +114,7 @@ skip_before_action :verify_authenticity_token, only: [:apiCreate, :apiCreateRepl
 
   
   def apiDelete
-    @comment = Comment.find(params[:id])
+    @comment = Comment.find(params[:idc])
     @comment.destroy
   end
   

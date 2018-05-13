@@ -45,8 +45,8 @@ Rails.application.routes.draw do
       get "contributions/:id", to: "/contributions#apiGetContribution"
       get "users/:id/threads", to: "/comments#apiThreads"
       get "contributions/:id/comments", to: "/contributions#apiGetComments"
-      delete "contributions/:id", to: "/contributions#apiDelete"
-      delete "comments/:id", to: "/comments#apiDelete"
+      delete "users/:id/contributions/:idc", to: "/contributions#apiDelete"
+      delete "users/:id/comments/:idc", to: "/comments#apiDelete"
   end
   resources :users
   root 'contributions#index'
