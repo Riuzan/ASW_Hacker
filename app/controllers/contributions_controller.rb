@@ -1,8 +1,8 @@
 class ContributionsController < ApplicationController
   include SessionsHelper
   before_action :set_contribution, only: [:show, :edit, :update, :destroy]
-  before_action :auth_token, only: [:apiCreateASk,:apiCreateUrl, :apiUpvote, :apiUnvote]
-  skip_before_action :verify_authenticity_token, only: [:apiCreateAsk,:apiCreateUrl, :apiUpvote, :apiUnvote, :apiGetNew, :apiGetAsk, :apiGetUrl, :apiGetContribution, :apiGetComments]
+  before_action :auth_token, only: [:apiCreateASk,:apiCreateUrl, :apiUpvote, :apiUnvote, :apiDelete]
+  skip_before_action :verify_authenticity_token, only: [:apiCreateAsk,:apiCreateUrl, :apiUpvote, :apiUnvote, :apiGetNew, :apiGetAsk, :apiGetUrl, :apiGetContribution, :apiGetComments, :apiDelete]
 
   
   
@@ -149,6 +149,13 @@ class ContributionsController < ApplicationController
       format.html { redirect_to contributions_url }
       format.json { head :no_content }
     end
+  end
+  
+  # DELETE /api/contributions/1
+  # DELETE /api/contributions/1.json
+  def apiDelete
+    @contribution = Contribution.find(params[:id])
+    @contribution.destroy
   end
 
 def upvote 

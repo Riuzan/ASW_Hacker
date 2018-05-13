@@ -1,8 +1,8 @@
 class CommentsController < ApplicationController
 include SessionsHelper
 before_action :find_commentable
-before_action :auth_token, only: [:apiCreate, :apiCreateReply, :apiUpvote, :apiUnvote]
-skip_before_action :verify_authenticity_token, only: [:apiCreate, :apiCreateReply, :apiUpvote, :apiUnvote]
+before_action :auth_token, only: [:apiCreate, :apiCreateReply, :apiUpvote, :apiUnvote, :apiDelete]
+skip_before_action :verify_authenticity_token, only: [:apiCreate, :apiCreateReply, :apiUpvote, :apiUnvote, :apiDelete]
 
   def show
     @comment = Comment.find(params[:id])
@@ -113,6 +113,10 @@ skip_before_action :verify_authenticity_token, only: [:apiCreate, :apiCreateRepl
   
 
   
+  def apiDelete
+    @comment = Comment.find(params[:id])
+    @comment.destroy
+  end
   
   private
 
