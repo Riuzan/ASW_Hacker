@@ -2,7 +2,7 @@ class CreateContributions < ActiveRecord::Migration[5.1]
   def change
     create_table :contributions do |t|
       t.string :title
-      t.string :url
+      t.string :url, unique: true
       t.text :text
       t.string :type
       t.integer :votes, :default => 0

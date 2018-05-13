@@ -1,6 +1,8 @@
 class CommentsController < ApplicationController
 include SessionsHelper
 before_action :find_commentable
+before_action :auth_token, only: [:apiCreate, :apiCreateReply, :apiUpvote, :apiUnvote]
+skip_before_action :verify_authenticity_token, only: [:apiCreate, :apiCreateReply, :apiUpvote, :apiUnvote]
 
   def show
     @comment = Comment.find(params[:id])
@@ -31,6 +33,46 @@ before_action :find_commentable
     #end
   end
   
+  
+  def apiCreate
+    @comment = @commentable.comments.new params.require(:comment).permit(:body)
+    @comment.commentable_type = "Contribution"
+    @comment.commentable_id = params[:commentable_id]
+    @comment.user_id = params[:id]
+
+      if @comment.save
+        render json: {status: 'SUCCESS', message: 'Comment saved', data: @comment}, status: :ok
+
+      else
+        render json: {status: 'ERROR', message: 'Internal server error', data:[]}, status: :internal_server_error
+
+      end
+  end
+  
+  def apiCreateReply
+    @comment = @commentable.comments.new params.require(:comment).permit(:body)
+    @comment.commentable_type = "Comment"
+    @comment.commentable_id = params[:commentable_id]
+    @comment.user_id = params[:id]
+
+      if @comment.save
+        render json: {status: 'SUCCESS', message: 'Comment saved', data: @comment}, status: :ok
+
+      else
+        render json: {status: 'ERROR', message: 'Internal server error', data:[]}, status: :internal_server_error
+
+      end
+  end
+  
+   def apiThreads
+     
+    @comment = Comment.select{ |c| c.user_id == params[:id].to_i}
+        render json: {status: 'SUCCESS', message: 'Comments from user', data: @comment}, status: :ok
+   end
+  
+  
+  
+  
   def upvote 
     @comment = Comment.find(params[:id])
     @comment.liked_by current_user
@@ -43,6 +85,34 @@ before_action :find_commentable
      redirect_back(fallback_location: root_path)
   end
   
+  def apiUpvote 
+    @user = User.find(params[:id])
+    if @user == nil 
+      render json: {status: 'ERROR', message: 'User does not exist', data: []}, status: :internal_server_error
+    end
+    @comment = Comment.find(params[:idc])
+    if @comment == nil 
+      render json: {status: 'ERROR', message: 'Comment does not exist', data: []}, status: :internal_server_error
+    end
+    @comment.liked_by @user
+    render json: {status: 'SUCCESS', message: 'Comment upvoted', data: []}, status: :ok
+  end  
+  
+  def apiUnvote
+    @user = User.find(params[:id])
+    if @user == nil 
+      render json: {status: 'ERROR', message: 'User does not exist', data: []}, status: :internal_server_error
+    end
+    @comment = Comment.find(params[:idc])
+    if @comment == nil 
+      render json: {status: 'ERROR', message: 'Comment does not exist', data: []}, status: :internal_server_error
+    end
+    @comment.unliked_by @user
+     render json: {status: 'SUCCESS', message: 'Comment unvoted', data: []}, status: :ok
+  end
+  
+
+  
   
   private
 
@@ -51,8 +121,18 @@ before_action :find_commentable
   end
 
   def find_commentable
-    @commentable = Contribution.find_by_id(params[:contribution_id]) if params[:contribution_id]
-    @commentable = Comment.find_by_id(params[:comment_id]) if params[:comment_id]
+    @commentable = Contribution.find_by_id(params[:commentable_id]) if params[:commentable_id]
+    if(params[:commentable_id] && @commentable == nil)
+      @commentable = Comment.find_by_id(params[:commentable_id])
+    end
+  end
+  
+  def auth_token
+      key = request.headers["X-API-KEY"]
+      @user = User.find(params[:id])
+      if @user.token != key
+        render json: {status: 'ERROR', message: 'Authentication error', data:[]}, status: :unauthorized
+      end
   end
 
 end

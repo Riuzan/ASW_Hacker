@@ -1,12 +1,15 @@
 class ContributionsController < ApplicationController
   include SessionsHelper
   before_action :set_contribution, only: [:show, :edit, :update, :destroy]
+  before_action :auth_token, only: [:apiCreateASk,:apiCreateUrl, :apiUpvote, :apiUnvote]
+  skip_before_action :verify_authenticity_token, only: [:apiCreateAsk,:apiCreateUrl, :apiUpvote, :apiUnvote, :apiGetNew, :apiGetAsk, :apiGetUrl, :apiGetContribution, :apiGetComments]
+
   
   
   # GET /contributions
   # GET /contributions.json
   def index
-    @contributions = Contribution.select{ |c| c.url != ""}.sort { |x,y| y.get_likes.size <=> x.get_likes.size }.first(30)
+    @contributions = Contribution.select{ |c| c.url != nil}.sort { |x,y| y.get_likes.size <=> x.get_likes.size }.first(30)
   end
   
   def index_new
@@ -22,7 +25,7 @@ class ContributionsController < ApplicationController
   end
   
   def ask
-    @contributions = Contribution.all.order(created_at: :DESC).select{ |c| c.url == ""}.first(30)
+    @contributions = Contribution.all.order(created_at: :DESC).select{ |c| c.url == nil}.first(30)
   end
 
   # GET /contributions/new
@@ -38,6 +41,31 @@ class ContributionsController < ApplicationController
   def edit
   end
 
+  def apiGetNew
+    @contributions = Contribution.all.order(created_at: :DESC).first(30)
+    render json: {status: 'SUCCESS', message: 'Contributions ordered by new', data: @contributions}, status: :ok
+  end
+  
+  def apiGetAsk
+    @contributions = Contribution.all.order(created_at: :DESC).select{ |c| c.url == nil}.first(30)
+    render json: {status: 'SUCCESS', message: 'Contributions ask', data: @contributions}, status: :ok
+  end
+  
+  def apiGetUrl
+    @contributions = Contribution.select{ |c| c.url != nil}.sort { |x,y| y.get_likes.size <=> x.get_likes.size }.first(30)
+    render json: {status: 'SUCCESS', message: 'Contributions url', data: @contributions}, status: :ok
+  end
+  
+  def apiGetContribution
+    @contributions = Contribution.find(params[:id])
+    render json: {status: 'SUCCESS', message: 'Contributions found', data: @contributions}, status: :ok
+  end
+  
+  def apiGetComments
+    @contributions = Comment.select{ |c| c.commentable_id == params[:id].to_i and c.commentable_type == "Contribution"}
+    render json: {status: 'SUCCESS', message: 'Comments found', data: @contributions}, status: :ok
+  end
+  
   # POST /contributions
   # POST /contributions.json
   def create
@@ -64,6 +92,37 @@ class ContributionsController < ApplicationController
       end
     end
   end
+  
+  # POST /api/users/:id/contributions/ask
+  def apiCreateAsk
+
+    @contribution = Contribution.new(params.require(:contribution).permit(:title, :text))
+    @contribution.user_id = params[:id]
+    @contribution.url = nil
+      if @contribution.title != nil && @contribution.save  #es post
+         render json: {status: 'SUCCES', message: 'Post saved', data: @contribution}, status: :ok
+      else
+       
+        render json: {status: 'ERROR', message: 'Internal server error', data:[]}, status: :internal_server_error
+      end
+  end
+  
+  
+  # POST /api/users/:id/contributions/url
+  def apiCreateUrl
+
+    @contribution = Contribution.new(params.require(:contribution).permit(:title, :url))
+    @contribution.user_id = params[:id]
+    @contribution.text = nil
+      if @contribution.title != nil && @contribution.save  #es post
+         render json: {status: 'SUCCES', message: 'Post saved', data: @contribution}, status: :ok
+      else
+       
+        render json: {status: 'ERROR', message: 'Internal server error', data:[]}, status: :internal_server_error
+      end
+  end
+  
+  
 
   # PATCH/PUT /contributions/1
   # PATCH/PUT /contributions/1.json
@@ -100,6 +159,33 @@ def unvote
   @contribution.unliked_by current_user
   redirect_back(fallback_location: root_path)
 end
+
+def apiUpvote 
+    @user = User.find(params[:id])
+    if @user == nil 
+      render json: {status: 'ERROR', message: 'User does not exist', data: []}, status: :internal_server_error
+    end
+    @contribution = Contribution.find(params[:idc])
+    if @contribution == nil 
+      render json: {status: 'ERROR', message: 'Contribution does not exist', data: []}, status: :internal_server_error
+    end
+    @contribution.liked_by @user
+    render json: {status: 'SUCCESS', message: 'Contribution upvoted', data: []}, status: :ok
+end  
+  
+  def apiUnvote
+    @user = User.find(params[:id])
+    if @user == nil 
+      render json: {status: 'ERROR', message: 'User does not exist', data: []}, status: :internal_server_error
+    end
+    @contribution = Contribution.find(params[:idc])
+    if @contribution == nil 
+      render json: {status: 'ERROR', message: 'Contribution does not exist', data: []}, status: :internal_server_error
+    end
+    @contribution.unliked_by @user
+    render json: {status: 'SUCCESS', message: 'Contribution unvoted', data: []}, status: :ok
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contribution
@@ -108,8 +194,17 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contribution_params
-      params.require(:contribution).permit(:title, :url, :text, :votes, :user_id, :comment_id)
+      params.require(:contribution).permit(:title, :url, :text,:votes, :user_id, :comment_id)
     end
+    
+    def auth_token
+      key = request.headers["X-API-KEY"]
+      @user = User.find(params[:id])
+      if @user.token != key
+        render json: {status: 'ERROR', message: 'Authentication error', data:[]}, status: :unauthorized
+      end
+    end
+      
     
   
 end

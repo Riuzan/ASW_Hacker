@@ -68,10 +68,10 @@ class UsersController < ApplicationController
         if  @user.update(user_params)
           render json: {status: 'SUCCES', message: 'User has been updated', data:[]}, status: :ok
         else
-          render json: {status: 'ERROR', message: 'Could not update the user', data:[]}, status: :ok
+          render json: {status: 'ERROR', message: 'Could not update the user', data:[]}, status: :internal_server_error
         end
       else 
-        render json: {status: 'ERROR', message: 'Authentication error', data:[]}, status: :ok
+        render json: {status: 'ERROR', message: 'Authentication error', data:[]}, status: :unauthorized
       end
   end
 

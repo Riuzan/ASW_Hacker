@@ -8,11 +8,11 @@
                ▲  
          <% end %><% end %></td>
         <td class="title">
-          <% if contribution.url!="" %>
+          <% if contribution.url!=nil %>
             <%= link_to contribution.title, "http://#{contribution.url}", :class=>"link" %>
             <span class="sitebit comhead">(<%= contribution.url %>)</span>
           <% end %>
-          <% if contribution.url=="" %>
+          <% if contribution.url==nil %>
             <%= link_to contribution.title, contribution, :class=>"link" %>
           <% end %>
         </td>

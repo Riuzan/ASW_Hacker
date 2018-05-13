@@ -31,6 +31,20 @@ Rails.application.routes.draw do
       get "users/:id", to: "/users#apiShow"
       put "users/:id", to: "/users#apiEdit"
       patch "users/:id", to: "/users#apiEdit"
+      post "users/:id/contributions/ask", to: "/contributions#apiCreateAsk"
+      post "users/:id/contributions/url", to: "/contributions#apiCreateUrl"
+      post "users/:id/contributions/:commentable_id/comments", to: "/comments#apiCreate"
+      post "users/:id/comments/:commentable_id/reply", to: "/comments#apiCreateReply"
+      put "users/:id/comments/:idc/upvote", to: "/comments#apiUpvote"
+      put "users/:id/comments/:idc/unvote", to: "/comments#apiUnvote"
+      put "users/:id/contributions/:idc/upvote", to: "/contributions#apiUpvote"
+      put "users/:id/contributions/:idc/unvote", to: "/contributions#apiUnvote"
+      get "contributions/new", to: "/contributions#apiGetNew"
+      get "contributions/ask", to: "/contributions#apiGetAsk"
+      get "contributions/url", to: "/contributions#apiGetUrl"
+      get "contributions/:id", to: "/contributions#apiGetContribution"
+      get "users/:id/threads", to: "/comments#apiThreads"
+      get "contributions/:id/comments", to: "/contributions#apiGetComments"
   end
   resources :users
   root 'contributions#index'
