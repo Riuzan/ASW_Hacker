@@ -30,7 +30,6 @@ Rails.application.routes.draw do
   namespace :api do 
       get "users/:id", to: "/users#apiShow"
       put "users/:id", to: "/users#apiEdit"
-      patch "users/:id", to: "/users#apiEdit"
       post "users/:id/contributions/ask", to: "/contributions#apiCreateAsk"
       post "users/:id/contributions/url", to: "/contributions#apiCreateUrl"
       post "users/:id/contributions/:commentable_id/comments", to: "/comments#apiCreate"
