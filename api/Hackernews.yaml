@@ -1,0 +1,488 @@
+swagger: "2.0"
+info:
+  description: "Documentació de l'API per el projecte Hacker News."
+  version: "1.0"
+  title: "Hacker News"
+externalDocs:
+  description: "GitHub repository"
+  url: "https://github.com/Riuzan/ASW_Hacker.git"
+host: salty-beyond-71147.herokuapp.com
+tags:
+- name: "posts"
+  description: "All posts REST calls"
+- name: "comments"
+  description: "All comments REST calls"
+- name: "users"
+  description: "All users REST calls"
+- name: "votes"
+  description: "All votes REST calls"
+schemes:
+- "https"
+paths:
+  '/api/users/{user_id}/contributions/ask':
+      post:
+        tags:
+          - posts
+        consumes:
+          - multipart/form-data
+        produces:
+          - application/json
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: title
+            in: formData
+            required: true
+            type: string
+          - name: text
+            in: formData
+            required: true
+            type: string
+        responses:
+          '201':
+            description: Post de tipus ask creat satisfactoriament
+           
+          '401':
+            description: No té permis per crear el post
+          '409':
+            description: Error
+        security:
+          - api_key: []
+          
+  '/api/contributions/ask' :
+      get:
+        tags: 
+        - posts
+        consumes:
+          - application/json
+        produces:
+          - application/json
+
+        responses:
+          '200':
+            description: Mostra tots els posts tipus ask
+
+          '404':
+            description: No hi ha cap contribució d'aquest tipus
+  '/api/contributions/new' :
+      get:
+        tags: 
+        - posts
+        consumes:
+          - application/json
+        produces:
+          - application/json
+
+        responses:
+          '200':
+            description: Mostra tots els posts ordenats per data
+
+
+          '404':
+            description: No hi ha cap contribució d'aquest tipus
+        
+  '/api/users/{user_id}/contributions/url':
+      post:
+        tags:
+          - posts
+        consumes:
+          - application/x-www-form-urlencoded
+        produces:
+          - application/json
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: title
+            in: formData
+            required: true
+            type: string
+          - name: url
+            in: formData
+            required: true
+            type: string
+
+        responses:
+          '201':
+            description: Post de tipus url creat satisfactoriament
+
+          '401':
+            description: No té permis per crear el post
+          '409':
+            description: Error
+        security:
+          - api_key: []
+  '/api/contributions/url':
+      get:
+        tags: 
+        - posts
+        consumes:
+          - application/json
+        produces:
+          - application/json
+
+        responses:
+          '200':
+            description: Mostra tots els posts tipus url
+
+          '404':
+            description: No hi ha cap contribució d'aquest tipus
+  '/api/contributions/{contribution_id}':
+      get:
+        tags: 
+        - posts
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+
+          - name: contribution_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+        responses:
+          '200':
+            description: Mostra la contribució identificada per contribution_id
+
+          '401':
+            description: No identificat
+          '404':
+            description: No hi ha cap contribució d'aquest tipus      
+  '/api/users/{user_id}/contributions/{contribution_id}' :
+      delete:
+        tags: 
+        - posts
+        parameters:
+          - name: contribution_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+        responses:
+          '200':
+            description: Elimina la contribució identificada per contribution_id
+
+          '401':
+            description: No identificat
+          '404':
+            description: No hi ha cap contribució d'aquest tipus  
+        security:
+          - api_key: []  
+  '/api/contributions/{commentable_id}/comments' :
+      get:
+        tags: 
+          - posts
+        produces:
+          - application/json
+        parameters:
+            - name: commentable_id
+              in: path
+              required: true
+              type: integer
+              minimum: 1
+        responses:
+          '200':
+            description: Mostra tots els comentaris de una contribucio
+        
+          '404':
+            description: No hi ha cap contribució d'aquest tipus
+
+  '/api/users/{user_id}/contributions/{commentable_id}/comments' :
+    post:
+      tags: 
+      - comments
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: commentable_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: body
+            in: formData
+            required: true
+            type: string
+      responses:
+        '200':
+          description: Mostra tots els posts tipus ask
+      
+        '401':
+          description: No identificat
+        '404':
+          description: No hi ha cap contribució d'aquest tipus
+      security:
+          - api_key: []
+  '/api/users/{user_id}/comments/{commentable_id}/reply' :
+    post:
+      tags: 
+      - comments
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: commentable_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: body
+            in: formData
+            required: true
+            type: string
+      responses:
+        '200':
+          description: Mostra tots els posts tipus ask
+        '401':
+          description: No identificat
+        '404':
+          description: No hi ha cap contribució d'aquest tipus
+      security:
+          - api_key: []
+  '/api/users/{user_id}/threads' :
+    get:
+      tags: 
+      - comments
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Mostra tots els posts tipus ask
+        '401':
+          description: No identificat
+        '404':
+          description: No hi ha cap contribució d'aquest tipus
+      security:
+          - api_key: []
+            
+  '/api/users/{user_id}/comments/{comment_id}' :
+    delete:
+        tags: 
+        - comments
+        parameters:
+          - name: comment_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+        responses:
+          '200':
+            description: Elimina el comentari per comment_id
+
+          '401':
+            description: No identificat
+          '404':
+            description: No hi ha cap commentari d'aquest tipus  
+        security:
+          - api_key: []   
+  
+  '/api/users/{user_id}':
+      get:
+        tags: 
+          - users
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+        responses:
+          '200':
+            description: Mostra el perfil d'usuari
+
+          '401':
+            description: No existeix l'usuari 
+        security:
+          - api_key: []
+      put:
+        tags:
+          - users
+        consumes:
+          - application/x-www-form-urlencoded
+        produces:
+          - application/json
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+            minimum: 1
+          - name: email
+            in: formData
+            required: true
+            type: string
+          - name: about
+            in: formData
+            required: true
+            type: string
+          - name: name
+            in: formData
+            required: true
+            type: string
+             
+        responses:
+          '200':
+            description: Perfil modificat
+
+          '401':
+            description: No es tenen permisos per modificar aquest perfil
+          '404':
+            description: El perfil no existeix
+          '409':
+            description: Error de modificació
+        security:
+          - api_key: []
+  
+  '/api/users/{user_id}/contributions/{contribution_id}/upvote':
+      put:
+        tags:
+          - votes
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+          - name: contribution_id
+            in: path
+            required: true
+            type: integer
+        responses:
+          '200':
+            description: Vot creat
+            
+          '401':
+            description: No autoritzat
+        security:
+          - api_key: []
+  '/api/users/{user_id}/contributions/{contribution_id}/unvote':
+      put:
+        tags:
+          - votes
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+          - name: contribution_id
+            in: path
+            required: true
+            type: integer
+        responses:
+          '200':
+            description: Vot creat
+            
+          '401':
+            description: No autoritzat
+            
+        security:
+          - api_key: []
+  
+  '/api/users/{user_id}/comments/{comment_id}/upvote':
+      put:
+        tags:
+          - votes
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+          - name: comment_id
+            in: path
+            required: true
+            type: integer
+        responses:
+          '200':
+            description: Vot creat
+            
+          '401':
+            description: No autoritzat
+            
+        security:
+          - api_key: []
+          
+  '/api/users/{user_id}/comments/{comment_id}/unvote':
+      put:
+        tags:
+          - votes
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            type: integer
+          - name: comment_id
+            in: path
+            required: true
+            type: integer
+        responses:
+          '200':
+            description: Vot creat
+            
+          '401':
+            description: No autoritzat
+            
+        security:
+          - api_key: []
+  
+securityDefinitions:
+  api_key:
+    type: apiKey
+    in: header
+    name: X-API-KEY
