@@ -2,7 +2,7 @@ class ContributionsController < ApplicationController
   include SessionsHelper
   before_action :set_contribution, only: [:show, :edit, :update, :destroy]
   before_action :auth_token, only: [:apiCreateASk,:apiCreateUrl, :apiUpvote, :apiUnvote, :apiDelete]
-  skip_before_action :verify_authenticity_token, only: [:apiCreateAsk,:apiCreateUrl, :apiUpvote, :apiUnvote, :apiGetNew, :apiGetAsk, :apiGetUrl, :apiGetContribution, :apiGetComments, :apiDelete]
+  skip_before_action :verify_authenticity_token, only: [:apiVotedByCurrentUser, :apiCreateAsk,:apiCreateUrl, :apiUpvote, :apiUnvote, :apiGetNew, :apiGetAsk, :apiGetUrl, :apiGetContribution, :apiGetComments, :apiDelete]
 
   
   
