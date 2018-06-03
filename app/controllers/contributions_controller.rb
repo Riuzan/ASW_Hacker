@@ -80,6 +80,7 @@ class ContributionsController < ApplicationController
 
     if is_logged_in?
       @contribution.user_id = current_user.id
+      @contribution.username = current_user.name
     end
     respond_to do |format|
       if @contribution.url == ""
