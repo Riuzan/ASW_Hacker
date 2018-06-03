@@ -47,6 +47,7 @@ Rails.application.routes.draw do
       get "contributions/:id/comments", to: "/contributions#apiGetComments"
       delete "contributions/:id", to: "/contributions#apiDelete"
       delete "comments/:id", to: "/comments#apiDelete"
+      get "auth/:provider/callback", to: "/sessions#create"
   end
   resources :users
   root 'contributions#index'
