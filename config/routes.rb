@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       get "contributions/url", to: "/contributions#apiGetUrl"
       get "contributions/:id", to: "/contributions#apiGetContribution"
       get "users/:id/threads", to: "/comments#apiThreads"
+      get "contributions/:id/voted", to:"/contributions#apiVotedByCurrentUser"
       get "contributions/:id/comments", to: "/contributions#apiGetComments"
       delete "users/:id/contributions/:idc", to: "/contributions#apiDelete"
       delete "users/:id/comments/:idc", to: "/comments#apiDelete"

@@ -66,6 +66,12 @@ class ContributionsController < ApplicationController
     render json: {status: 'SUCCESS', message: 'Comments found', data: @contributions}, status: :ok
   end
   
+  def apiVotedByCurrentUser
+       @contribution = Contribution.find(params[:id])
+       @aux = current_user.liked? @contribution
+      render json: {status: 'SUCCESS', message: 'Comments found', data: @aux}, status: :ok
+  end
+  
   # POST /contributions
   # POST /contributions.json
   def create
