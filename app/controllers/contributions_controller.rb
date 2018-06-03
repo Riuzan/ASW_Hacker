@@ -108,6 +108,8 @@ class ContributionsController < ApplicationController
 
     @contribution = Contribution.new(params.permit(:title, :text))
     @contribution.user_id = params[:id]
+    @user = User.find(params[:id])
+    @contribution.username = @user.name
     @contribution.url = nil
       if @contribution.title != nil && @contribution.save  #es post
          render json: {status: 'SUCCES', message: 'Post saved', data: @contribution}, status: :ok
@@ -123,6 +125,8 @@ class ContributionsController < ApplicationController
 
     @contribution = Contribution.new(params.permit(:title, :url))
     @contribution.user_id = params[:id]
+    @user = User.find(params[:id])
+    @contribution.username = @user.name
     @contribution.text = nil
       if @contribution.title != nil && @contribution.save  #es post
          render json: {status: 'SUCCES', message: 'Post saved', data: @contribution}, status: :ok
@@ -192,7 +196,10 @@ def apiUpvote
     if @contribution == nil 
       render json: {status: 'ERROR', message: 'Contribution does not exist', data: []}, status: :internal_server_error
     end
-    @contribution.liked_by @user
+    if not @user.liked? @contribution
+      @contribution.liked_by @user
+      @contribution.increment!(:votes, 1)
+    end
     render json: {status: 'SUCCESS', message: 'Contribution upvoted', data: []}, status: :ok
 end  
   
@@ -205,7 +212,10 @@ end
     if @contribution == nil 
       render json: {status: 'ERROR', message: 'Contribution does not exist', data: []}, status: :internal_server_error
     end
-    @contribution.unliked_by @user
+    if @user.liked? @contribution
+      @contribution.unliked_by @user
+      @contribution.decrement!(:votes, 1)
+    end
     render json: {status: 'SUCCESS', message: 'Contribution unvoted', data: []}, status: :ok
   end
   
