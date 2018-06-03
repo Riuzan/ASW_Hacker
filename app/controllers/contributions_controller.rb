@@ -166,14 +166,20 @@ class ContributionsController < ApplicationController
 
 def upvote 
   @contribution = Contribution.find(params[:id])
-  @contribution.liked_by current_user
-  redirect_back(fallback_location: root_path)
+  if not current_user.liked? @contribution
+    @contribution.liked_by current_user
+    @contribution.increment!(:votes, 1)
+    redirect_back(fallback_location: root_path)
+  end
 end  
 
 def unvote
   @contribution = Contribution.find(params[:id])
-  @contribution.unliked_by current_user
-  redirect_back(fallback_location: root_path)
+  if current_user.liked? @contribution
+     @contribution.unliked_by current_user
+     @contribution.decrement!(:votes, 1)
+     redirect_back(fallback_location: root_path)
+  end
 end
 
 def apiUpvote 
